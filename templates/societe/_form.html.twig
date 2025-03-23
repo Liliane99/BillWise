@@ -1,0 +1,73 @@
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<div class="flex justify-center items-center mb-4">
+    <div class="relative">
+        <img id="companyLogoPreview" src="{{ (form.vars.value.avatarLogo is not null) ? vich_uploader_asset(form.vars.value, 'avatar_logoFile') : asset('images/user_default.png') }}" class="rounded-full border border-gray-200 w-36 h-36 object-cover">
+        <label for="societe_avatar_logoFile_file" class="absolute inset-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 text-white font-semibold font-nunito rounded-full cursor-pointer hover:bg-opacity-70 transition duration-300 ease-in-out">
+            <i class="fas fa-camera"></i>
+        </label>
+        
+        {{ form_widget(form.avatar_logoFile, {'attr': {'class': 'hidden'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.raison_sociale, 'Raison Sociale', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.raison_sociale, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.num_siret, 'Numéro SIRET', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_siret, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.adresse, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.code_postal, 'Code Postal', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.code_postal, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.ville, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.num_tel, 'Numéro de Téléphone', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_tel, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.num_fix, 'Numéro Fixe', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_fix, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="text-right mt-4">
+    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">Enregistrer</button>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+document.getElementById('societe_avatar_logoFile_file').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('companyLogoPreview').src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>

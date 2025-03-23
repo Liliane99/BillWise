@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex flex-wrap mt-4">
+        {% include 'components/sidebar.html.twig' %}
+
+        <div class="flex-grow p-4 bg-white dark:bg-gray-800 rounded-lg shadow ml-4 mr-4">
+            <h1 class="mb-4 text-lg font-bold font-nunito text-blue-color dark:text-white">Modifier un produit</h1>
+
+            <div>
+                {{ include('produit/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-4">
+                <form method="post" action="{{ path('app_produit_delete', {'id': produit.id}) }}" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce produit?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+                    <button class="px-4 py-2 bg-blue-color text-white rounded-lg">Delete</button>
+                </form>
+            </div>
+            <a href="{{ path('app_produit_index') }}" class=" text-left text-blue-color hover:text-blue-600 dark:hover:text-blue-400 dark:text-white">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

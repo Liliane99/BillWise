@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau produit{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex flex-wrap mt-4">
+        {% include 'components/sidebar.html.twig' %}
+
+        <div class="flex-grow p-4 bg-white dark:bg-gray-800 rounded-lg shadow ml-4 mr-4">
+            <h1 class="mb-4 text-lg font-bold font-nunito text-blue-color dark:text-white">Créer un nouveau produit</h1>
+
+            <div>
+                {{ include('produit/_form.html.twig') }}
+            </div>
+
+            <a href="{{ path('app_produit_index') }}" class="text-blue-color hover:text-blue-600 dark:hover:text-blue-400 dark:text-white">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+{% endblock %}

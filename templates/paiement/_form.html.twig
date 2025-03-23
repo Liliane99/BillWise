@@ -1,0 +1,65 @@
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full">
+        {{ form_label(form.facture, 'Choisissez à quelle facture ajouter ce paiement', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.facture, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+        <div id="facture-info" class="mt-2 bg-white shadow-lg p-4 rounded-lg text-blue-color border border-gray-200 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+            <p class='font-semibold'>Objet: <span id="object-placeholder" class="font-normal">__________</span></p>
+            <p class='font-semibold'>Nom du client: <span id="name-client-placeholder" class="font-normal">__________</span></p>
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.montant, 'Montant payé à cette date', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.montant, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.date_paiement, 'Date de paiement', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.date_paiement, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.type, 'Type de paiement', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.statut, 'Statut du paiement', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.statut, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="text-right mt-4">
+    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg font-semibold font-nunito">{{ button_label|default('Enregistrer') }}</button>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+        const factureSelect = document.getElementById('paiement_facture'); 
+
+        factureSelect.addEventListener('change', function() {
+        fetch(`/facture/facture-info/${this.value}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Réponse réseau non ok.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('object-placeholder').textContent = data.titre ?? 'Non disponible';
+                document.getElementById('name-client-placeholder').textContent = data.client ?? 'Non disponible';
+            })
+            .catch(error => {
+                console.error('Il y a eu un problème avec l\'opération fetch: ' + error.message);
+            });
+    });
+});
+</script>
+
+{{ form_end(form) }}

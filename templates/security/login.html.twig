@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+    <!-- Formulaire de connexion à gauche -->
+    <div class="flex-1 flex items-center justify-center p-6">
+        <div class="max-w-md w-full p-6 rounded-lg shadow-md bg-white">
+            <h1 class="text-base text-center font-bold font-nunito mb-1">Authentification</h1>
+            <p class="text-sm text-blue-color font-normal text-center font-nunito mb-4">Saisissez votre email et mot de passe</p>
+            
+            <form method="post">
+                {% if error %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-4">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="text-blue-500">Logout</a>
+                    </div>
+                {% endif %}
+
+                <label for="inputEmail" class="text-black font-semibold font-nunito">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="bg-blue-color-opacity text-blue-color p-2 rounded-lg w-full mb-4 mt-0.5" autocomplete="email" required autofocus>
+                
+                <label for="inputPassword" class="text-black font-semibold font-nunito mb-4">Password</label>
+                <input type="password" name="password" id="inputPassword" class="bg-blue-color-opacity text-blue-color p-2 rounded-lg w-full mb-4 mt-0.5" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn px-4 py-2 text-white bg-blue-color rounded-lg float-right" type="submit">
+                    Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex-1">
+        <img src="{{ asset('build/images/dashboard_man.jpg') }}" alt="Login Image" class="h-full w-full object-cover">
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+

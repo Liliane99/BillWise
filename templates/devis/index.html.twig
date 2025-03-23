@@ -1,0 +1,81 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Index des Devis{% endblock %}
+
+{% block body %}
+{% include 'components/navbar.html.twig' %} 
+<div class="flex mt-4">
+    {% include 'components/sidebar.html.twig' %} 
+    <div class="ml-4 mr-4 flex-1 p-4 overflow-x-auto dark:bg-gray-800 content bg-white  p-4 rounded-lg shadow">
+        <h1 class="text-blue-color font-nunito text-lg font-bold dark:text-white mb-4">Gérer les devis</h1>
+        <div class="mb-4">
+            <form action="{{ path('app_devis_index') }}" method="get" class="flex items-center space-x-2">
+                <input type="text" name="search" placeholder="Rechercher par référence" class="flex-1 border p-2 rounded-lg text-black dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 w-full sm:w-auto sm:flex-1">
+                <button type="submit" class="p-2 bg-blue-color text-white rounded-lg flex items-center justify-center w-12 h-12 sm:w-auto sm:h-auto sm:p-2">
+                    <i class="fas fa-search text-white text-lg"></i>
+                    <span class="ml-2 hidden sm:block">Rechercher</span>
+                </button>
+            </form>
+        </div>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-white font-nunito uppercase bg-blue-color">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Réference</th>
+                        <th scope="col" class="px-6 py-3">Date de devis</th>
+                        <th scope="col" class="px-6 py-3">Total TTC</th>
+                        <th scope="col" class="px-6 py-3">Société</th>
+                        <th scope="col" class="px-6 py-3">Créé le</th>
+                        <th scope="col" class="px-6 py-3">Créé par</th>
+                        <th scope="col" class="px-6 py-3">Modifié le</th>
+                        <th scope="col" class="px-6 py-3">Modifié par</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for devi in devis %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="px-6 py-4">{{ devi.refDevis }}</td>
+                        <td scope="col" class="px-6 py-3">{{ devi.dateDevis ? devi.dateDevis|date('Y-m-d H:i:s') : '' }}</td>
+                        <td class="px-6 py-4">{{ devi.totalTtc }}</td>
+                        <td class="px-6 py-4">{{ devi.society ? devi.society.raisonSociale : 'Non associé' }}</td>
+                        <td class="px-6 py-4">{{ devi.createdAt ? devi.createdAt|date('Y-m-d') : '' }}</td>
+                        <td class="px-6 py-4">{{ devi.createdBy ? devi.createdBy.email : 'N/A' }}</td>
+                        <td class="px-6 py-4">{{ devi.updatedAt ? devi.updatedAt|date('Y-m-d') : '' }}</td>
+                        <td class="px-6 py-4">{{ devi.updatedBy ? devi.updatedBy.email : 'N/A' }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_devis_show', {'slug': devi.slug}) }}" class="font-medium text-blue-600 hover:underline">Voir</a>
+                            <a href="{{ path('app_devis_edit', {'slug': devi.slug}) }}" class="font-medium text-blue-600 hover:underline">Modifier</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="px-6 py-4 text-center">Aucun devis trouvé</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="paginationControls" class="flex justify-center mt-4 space-x-2">
+            {% if currentPage > 1 %}
+                <a href="{{ path('app_devis_index', {'page': currentPage - 1}) }}" class="text-blue-color hover:text-blue-800 dark:text-white">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            {% endif %}
+            <span class="text-blue-color dark:text-white">{{ currentPage }}</span>
+            {% if currentPage < maxPages %}
+                <a href="{{ path('app_devis_index', {'page': currentPage + 1}) }}" class="text-blue-color hover:text-blue-800 dark:text-white">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_devis_new') }}" class="px-4 py-2 bg-blue-color text-white rounded-lg float-right">Créer un nouveau devis</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FactureProduit{% endblock %}
+
+{% block body %}
+    <h1>FactureProduit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ facture_produit.id }}</td>
+            </tr>
+            <tr>
+                <th>Nb_apprenant</th>
+                <td>{{ facture_produit.nbApprenant }}</td>
+            </tr>
+            <tr>
+                <th>Montant_ht</th>
+                <td>{{ facture_produit.montantHt }}</td>
+            </tr>
+            <tr>
+                <th>Taxe_tva</th>
+                <td>{{ facture_produit.taxeTva }}</td>
+            </tr>
+            <tr>
+                <th>Montant_remise</th>
+                <td>{{ facture_produit.montantRemise }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_facture_produit_index') }}">back to list</a>
+
+    <a href="{{ path('app_facture_produit_edit', {'id': facture_produit.id}) }}">edit</a>
+
+    {{ include('facture_produit/_delete_form.html.twig') }}
+{% endblock %}

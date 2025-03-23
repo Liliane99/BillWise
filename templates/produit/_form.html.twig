@@ -1,0 +1,62 @@
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.designation, 'Designation', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.designation, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.exigeance, 'Exigence', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.exigeance, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.society, 'Société', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.society, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.categorie, 'Catégorie', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.categorie, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.nb_apprenant_min, 'Nb Apprenant Min', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.nb_apprenant_min, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.nb_apprenant_max, 'Nb Apprenant Max', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.nb_apprenant_max, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.price_unit, 'Prix Unitaire', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.price_unit, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.taux_tva, 'Taux TVA', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.taux_tva, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.duration, 'Duration', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.duration, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.certification, 'Certification', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.certification, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="text-right mt-4">
+    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">{{ button_label|default('Save') }}</button>
+</div>
+
+{{ form_end(form) }}

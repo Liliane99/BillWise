@@ -1,0 +1,23 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors-node_modules_fortawesome_fontawesome-free_css_all_css-node_modules_core-js_modules_es-427194.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/vendors-node_modules_fortawesome_fontawesome-free_css_all_css-node_modules_core-js_modules_es-427194.css",
+        "/build/app.css"
+      ]
+    },
+    "login": {
+      "js": [
+        "/build/runtime.js"
+      ],
+      "css": [
+        "/build/login.css"
+      ]
+    }
+  }
+}

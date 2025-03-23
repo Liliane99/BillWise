@@ -1,0 +1,14 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        profilepicUser:
+            uri_prefix: /uploads/user/profile_pic
+            upload_destination: '%kernel.project_dir%/public/uploads/user/profile_pic/'
+            namer: 
+                service: Vich\UploaderBundle\Naming\HashNamer
+        avatar_logo_societe:
+            uri_prefix: /uploads/societe/avatar_logo
+            upload_destination: '%kernel.project_dir%/public/uploads/societe/avatar_logo/'
+            namer: 
+                service: Vich\UploaderBundle\Naming\HashNamer

@@ -1,0 +1,127 @@
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.society, 'Etablissement', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.society, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Nom de famille'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.prenom, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Prénom'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Email'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.num_tel, 'Numéro mobile', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_tel, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Numéro mobile'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.num_fix, 'Numéro fixe', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_fix, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Numéro fixe'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.adresse, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Adresse'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.code_postal, 'Code postal', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.code_postal, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Code postal'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2">
+        {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.ville, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Ville'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+    <div class="w-full" id="selectType">
+        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 items-center" id="entrepriseFields">
+    <div class="w-full sm:w-1/2" id="raison_sociale">
+        {{ form_label(form.raison_sociale, 'Raison sociale', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.raison_sociale, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Raison sociale'}}) }}
+    </div>
+    <div class="w-full sm:w-1/2" id="num_siret">
+        {{ form_label(form.num_siret, 'SIRET', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.num_siret, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'placeholder': 'Numéro SIRET'}}) }}
+    </div>
+</div>
+
+<div class="text-right mt-4">
+    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">{{ button_label|default('Enregistrer') }}</button>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const typeSelector = document.querySelector('#selectType select'); 
+        console.log("Je suis dans le sélécteur");
+        console.log(typeSelector);
+        if (!typeSelector) {
+            console.error("Le sélecteur de type n'a pas été trouvé.");
+            return;
+        }
+        const raisonSocialeField = document.querySelector('#raison_sociale input'); 
+        console.log("Je suis sur le champs socièté");
+
+        const siretField = document.querySelector('#num_siret input'); 
+        console.log(raisonSocialeField); 
+        console.log(siretField);
+
+        if (!raisonSocialeField || !siretField) {
+            console.error("Un ou plusieurs champs de formulaire n'ont pas été trouvés.");
+            return;
+        }
+
+        function updateFieldAccessibility() {
+            
+            const isEntreprise = typeSelector.value=== 'Entreprise';
+            console.log(isEntreprise);
+
+            raisonSocialeField.readOnly = !isEntreprise;
+            siretField.readOnly = !isEntreprise;
+            const addOrRemoveClasses = (element, condition) => {
+                const classesToAdd = "bg-gray-200 cursor-not-allowed";
+                const classesToRemove = "bg-white cursor-text";
+
+                if (condition) {
+                    element.classList.add(...classesToAdd.split(" "));
+                    element.classList.remove(...classesToRemove.split(" "));
+                } else {
+                    element.classList.add(...classesToRemove.split(" "));
+                    element.classList.remove(...classesToAdd.split(" "));
+                }
+            };
+
+            addOrRemoveClasses(raisonSocialeField, !isEntreprise);
+            addOrRemoveClasses(siretField, !isEntreprise);
+
+        }
+        updateFieldAccessibility();
+        typeSelector.addEventListener('change', updateFieldAccessibility);
+    });
+</script>
+

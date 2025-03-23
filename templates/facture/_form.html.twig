@@ -1,0 +1,283 @@
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="flex-1">
+        {{ form_label(form.titre_facture, 'Titre', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.titre_facture, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+    </div>
+    <div class="flex-1">
+        {{ form_label(form.ref_facture, 'Réference', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.ref_facture, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4">
+    <div class="flex-1 sm:flex-row">
+        {{ form_label(form.society, 'Société', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.society, {'attr': {'class': 'border text-base border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full mb-2 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+        <div id="society-info" class="mt-2 bg-white shadow-lg p-4 rounded-lg text-blue-color border border-gray-200  dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm">
+            <p class='font-semibold'>Raison sociale: <span id="society-name-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Adresse: <span id="society-address-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Code postal: <span id="society-zip-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Ville: <span id="society-city-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Numéro de téléphone: <span id="society-phone-placeholder" class="text-gray-400 font-normal">__________</span></p>
+        </div>
+    </div>
+    <div class="flex-1">
+        {{ form_label(form.client, 'Client', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.client, {'attr': {'class': 'border border-gray-200 text-base bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full mb-2 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+        <div id="client-info" class="mt-2 bg-white shadow-lg p-4 rounded-lg text-blue-color border border-gray-200 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm">
+            <p class='font-semibold'>Client: <span id="client-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Adresse: <span id="client-address-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Code postal: <span id="client-zip-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Ville: <span id="client-city-placeholder" class="text-gray-400 font-normal">__________</span></p>
+            <p class='font-semibold'>Email: <span id="client-email-placeholder" class="text-gray-400 font-normal">__________</span></p>
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <div class="w-1/2">
+        {{ form_label(form.date_facture, 'Date de la facture', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.date_facture, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+    </div>
+    <div class="w-1/2">
+        {{ form_label(form.date_echeance, 'Date d\'echeance', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+        {{ form_widget(form.date_echeance, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+    </div>
+</div>
+
+<div id="factureProduits" data-prototype="{{ form_widget(form.factureProduits.vars.prototype)|e('html_attr') }}" class="space-y-4 overflow-x-auto shadow-md sm:rounded-lg">
+    <h3 class="mb-2 text-base font-semibold font-nunito text-blue-color dark:text-white">Produits</h3>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-white font-nunito uppercase bg-blue-color">
+            <tr>
+                <th scope="col" class="py-3 px-6">Produit</th>
+                <th scope="col" class="py-3 px-6">Prix unitaire</th>
+                <th scope="col" class="py-3 px-6">Nombre d'apprenants</th>
+                <th scope="col" class="py-3 px-6">Montant HT</th>
+                <th scope="col" class="py-3 px-6">TVA</th>
+                <th scope="col" class="py-3 px-6">Remise</th>
+                <th scope="col" class="py-3 px-6">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <button type="button" class="add_item_link px-4 py-2 bg-blue-color text-white rounded-lg">Ajouter un produit</button>
+</div>
+
+
+<div class="flex flex-col sm:flex-row gap-4 items-start mt-4">
+    <div class="w-1/2 md:w-1/2 space-y-4">
+        <div>
+            {{ form_label(form.condition_termes, 'Conditions et termes', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.condition_termes, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+        <div>
+            {{ form_label(form.condition, 'Condition de paiement', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.condition, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+    </div>
+
+    <div class="w-1/2 md:w-1/2 space-y-4">
+        <div>
+            {{ form_label(form.total_ht, 'Total HT', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.total_ht, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+        <div>
+            {{ form_label(form.tva, 'TVA', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.tva, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+        <div>
+            {{ form_label(form.total_remise, 'Remise', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.total_remise, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+        <div>
+            {{ form_label(form.total_ttc, 'Total TTC', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+            {{ form_widget(form.total_ttc, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+        </div>
+    </div>
+</div>
+
+<div class="text-right mt-4">
+    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">{{ button_label|default('Save') }}</button>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+         const societySelect = document.getElementById('facture_society'); 
+         const clientSelect = document.getElementById('facture_client'); 
+ 
+         societySelect.addEventListener('change', function() {
+             fetch(`/societe/societe-info/${this.value}`)
+                 .then(response => response.json())
+                 .then(data => {
+                     document.getElementById('society-name-placeholder').textContent = data.raison_sociale ?? '';
+                     document.getElementById('society-address-placeholder').textContent = data.adresse ?? '';
+                     document.getElementById('society-zip-placeholder').textContent = data.code_postal ?? '';
+                     document.getElementById('society-city-placeholder').textContent = data.ville ?? '';
+                     document.getElementById('society-phone-placeholder').textContent = data.num_tel ?? '';
+                 });
+ 
+             fetch(`/societe/api/societe/${this.value}/clients`)
+                 .then(response => response.json())
+                 .then(data => {
+                     clientSelect.innerHTML = ''; 
+                     clientSelect.options.add(new Option('Sélectionnez un client', '', true, true)); 
+ 
+                     data.forEach(client => {
+                         const optionElement = new Option(client.label, client.id);
+                         clientSelect.appendChild(optionElement);
+                     });
+                 })
+                 .catch(error => console.error('Erreur:', error));
+             });
+ 
+         clientSelect.addEventListener('change', function() {
+             fetch(`/client/client-info/${this.value}`)
+                 .then(response => response.json())
+                 .then(data => {
+                 let clientText = data.type === 'particulier' 
+                     ? `${data.nom} ${data.prenom}` 
+                     : data.raison_sociale;
+                 document.getElementById('client-placeholder').textContent = clientText || '__________';
+                 document.getElementById('client-address-placeholder').textContent = data.adresse ?? '__________';
+                 document.getElementById('client-zip-placeholder').textContent = data.code_postal ?? '__________';
+                 document.getElementById('client-city-placeholder').textContent = data.ville ?? '__________';
+                 document.getElementById('client-email-placeholder').textContent = data.email ?? '__________';
+             });
+         });
+     });
+ 
+     document.addEventListener('DOMContentLoaded', function() {
+         const societySelect = document.getElementById('facture_society');
+         const produitsContainer = document.querySelector('#factureProduits');
+         const addButton = document.querySelector('.add_item_link');
+ 
+         let index = produitsContainer.querySelectorAll('tbody tr').length;
+ 
+         societySelect.addEventListener('change', function() {
+             updateProduitsForSociety(this.value);
+         });
+ 
+         addButton.addEventListener('click', function() {
+             addProduitRow();
+             setTimeout(updateTotals, 100);
+         });
+ 
+         function updateProduitsForSociety(societyId) {
+             fetch(`/produit/api/societe/${societyId}/products`)
+                 .then(response => response.json())
+                 .then(produits => {
+                    console.log(produits);
+                     produitsContainer.dataset.produits = JSON.stringify(produits);
+                 })
+                 .catch(error => console.error('Erreur lors de la récupération des produits:', error));
+         }
+ 
+         function addProduitRow() {
+             const produits = JSON.parse(produitsContainer.dataset.produits || '[]');
+             const newRow = document.createElement('tr');
+             newRow.innerHTML = createProduitRowHtml(index, produits);
+             produitsContainer.querySelector('tbody').appendChild(newRow);
+             attachEventListenersToRow(newRow, index);
+             index++;
+         }
+ 
+         function createProduitRowHtml(rowIndex, produits) {
+             let selectHtml = `<select name="facture[factureProduits][${rowIndex}][product]" class="product-select border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700">`;
+             produits.forEach(produit => {
+                 selectHtml += `<option value="${produit.id}" data-price-unit="${produit.priceUnit}" data-taux-tva="${produit.tauxTva}">${produit.designation}</option>`;
+             });
+             selectHtml += '</select>';
+ 
+             return `
+                 <td>${selectHtml}</td>
+                 <td><input type="text" name="facture[factureProduits][${rowIndex}][price_unit]" class="price-unit-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                 <td><input type="number" name="facture[factureProduits][${rowIndex}][nb_apprenant]" class="nb-apprenant-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" /></td>
+                 <td><input type="text" name="facture[factureProduits][${rowIndex}][montant_ht]" class="montant-ht-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                 <td><input type="text" name="facture[factureProduits][${rowIndex}][taxe_tva]" class="taxe-tva-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                 <td><input type="text" name="facture[factureProduits][${rowIndex}][montant_remise]" value="0.00" class="montant-remise-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" /></td>
+                 <td><button type="button" class="remove-item bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button></td>
+             `;
+         }
+ 
+         function attachEventListenersToRow(rowElement, rowIndex) {
+             const removeButton = rowElement.querySelector('.remove-item');
+             removeButton.addEventListener('click', function() {
+                 rowElement.remove();
+                 updateTotals();
+             });
+ 
+             const nbApprenantInput = rowElement.querySelector(`.nb-apprenant-input`);
+             const montantRemiseInput = rowElement.querySelector(`.montant-remise-input`);
+             const productSelect = rowElement.querySelector(`.product-select`);
+ 
+             productSelect.addEventListener('change', function() {
+                 updateRowValues(rowElement, rowIndex);
+                 updateTotals();
+             });
+ 
+             nbApprenantInput.addEventListener('input', function() {
+                 updateRowValues(rowElement, rowIndex);
+                 updateTotals();
+             });
+ 
+             montantRemiseInput.addEventListener('input', function() {
+                 updateTotals();
+             });
+         }
+ 
+         function updateRowValues(rowElement, rowIndex) {
+             const productSelect = rowElement.querySelector(`.product-select`);
+             const priceUnitInput = rowElement.querySelector(`.price-unit-input`);
+             const nbApprenantInput = rowElement.querySelector(`.nb-apprenant-input`);
+             const montantHtInput = rowElement.querySelector(`.montant-ht-input`);
+             const taxeTvaInput = rowElement.querySelector(`.taxe-tva-input`);
+ 
+             if (productSelect.selectedIndex >= 0) {
+                 const selectedOption = productSelect.options[productSelect.selectedIndex];
+                 const priceUnit = parseFloat(selectedOption.getAttribute('data-price-unit'));
+                 const tauxTva = parseFloat(selectedOption.getAttribute('data-taux-tva'));
+                 const nbApprenants = parseFloat(nbApprenantInput.value || 0);
+                 
+                 priceUnitInput.value = priceUnit.toFixed(2);
+                 montantHtInput.value = (priceUnit * nbApprenants).toFixed(2);
+                 taxeTvaInput.value = ((priceUnit * nbApprenants) * tauxTva).toFixed(2);
+             }
+         }
+ 
+         function updateTotals() {
+             let totalHt = 0, totalTva = 0, totalRemise = 0;
+             document.querySelectorAll('tbody tr').forEach(row => {
+                 const montantHtInput = row.querySelector('.montant-ht-input');
+                 const taxeTvaInput = row.querySelector('.taxe-tva-input');
+                 const montantRemiseInput = row.querySelector('.montant-remise-input');
+                 
+                 if (montantHtInput && taxeTvaInput && montantRemiseInput) {
+                     const montantHt = parseFloat(montantHtInput.value) || 0;
+                     const taxeTva = parseFloat(taxeTvaInput.value) || 0;
+                     const montantRemise = parseFloat(montantRemiseInput.value) || 0;
+ 
+                     totalHt += montantHt;
+                     totalTva += taxeTva;
+                     totalRemise += montantRemise;
+                 }
+             });
+ 
+             const totalTtc = totalHt + totalTva - totalRemise;
+ 
+             document.querySelector('input[name="facture[total_ht]"]').value = totalHt.toFixed(2);
+             document.querySelector('input[name="facture[tva]"]').value = totalTva.toFixed(2);
+             document.querySelector('input[name="facture[total_remise]"]').value = totalRemise.toFixed(2);
+             document.querySelector('input[name="facture[total_ttc]"]').value = totalTtc.toFixed(2);
+         }
+     });
+ 
+ </script>
+
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture PDF</title>
+    <style>
+        body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 20px; font-size: 12px; }
+        h1, h2, h3, h4 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 8px; }
+        th { background-color: #007bff; color: #ffffff; }
+        td { border-bottom: 1px solid #dddddd; }
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 24px; }
+        .info-section, .totals-section { display: flex; justify-content: space-between; margin-top: 20px; }
+        .info-section div, .totals-section div { width: 48%; }
+        .totals { text-align: right; }
+        .totals-table td { text-align: right; }
+        .totals-table { width: auto; float: right; }
+        .content { border: 1px solid #ccc; padding: 10px; margin-top: 180px; }
+        .condition-terms { margin-top: 20px; }
+        .condition-terms p { margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+
+    <h1 class="text-blue">Facture </h1>
+    <div class="header-section">
+        <h1>{{ facture.society.raisonSociale }}</h1>
+        <div>{{ facture.society.adresse }}</div>
+        <div>{{ facture.society.codePostal }} {{ facture.society.ville }}</div>
+        <div>Email: {{ facture.society.email }}</div>
+        <div>Tél: {{ facture.society.numTel }}</div>
+    </div>
+    
+
+    <div class="flex justify-between mt-4">
+        <div class="px-4 py-2">
+            <h3>Facture À:</h3>
+            {% if facture.client.type == 'Particulier' %}
+                <div>{{ facture.client.prenom }} {{ facture.client.nom }}</div>
+            {% else %}
+                <div>{{ facture.client.raisonSociale }}</div>
+            {% endif %}
+            <div>{{ facture.client.adresse }}</div>
+            <div>{{ facture.client.codePostal }} {{ facture.client.ville }}</div>
+            <div>Email: {{ facture.client.email }}</div>
+            <div>Tél: {{ facture.client.numTel }}</div>
+        </div>
+        <div class="flex gap-4 px-4 py-2 ">
+            <h3>Détails de Facture:</h3>
+            <div><strong>N° de référence:</strong> {{ facture.refFacture }}</div>
+            <div><strong>Date d'émission:</strong> {{ facture.dateFacture|date('d/m/Y') }}</div>
+            <div><strong>Conditions:</strong> {{ facture.condition }}</div>
+            <div><strong>Date d'échéance:</strong> {{ facture.dateEcheance|date('d/m/Y') }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" style="padding: 8px; text-align: left;">Produit</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Prix unitaire</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Quantité</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Montant HT</th>
+                <th scope="col" style="padding: 8px; text-align: left;">TVA</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Remise</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in facture.factureProduits %}
+                <tr>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.product.designation }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.product.priceUnit }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.nbApprenant }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.montantHt }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.taxeTva }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.montantRemise }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <div></div>
+        <div class="totals">
+            <table class="totals-table">
+                <tr><td>Total HT:</td><td>{{ facture.totalHt }} €</td></tr>
+                <tr><td>TVA:</td><td>{{ facture.tva }} €</td></tr>
+                <tr><td>Remise:</td><td>{{ facture.totalRemise }} €</td></tr>
+                <tr><td><strong>Total TTC:</strong></td><td><strong>{{ facture.totalTtc }} €</strong></td></tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="content">
+        <h4>Conditions et Termes:</h4>
+        <p class="condition-terms">{{ facture.conditionTermes }}</p>
+    </div>
+</body>
+</html>

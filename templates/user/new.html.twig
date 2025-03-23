@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouvel utilisateur{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex mt-4 ml-2 items-start">
+        {% include 'components/sidebar.html.twig' %}
+
+        <div class="flex-1 p-4 ml-4 mr-4 overflow-x-auto dark:bg-gray-800 content bg-white p-4 rounded-lg shadow">
+            <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">Ajouter un nouvel utilisateur</h1>
+
+            <div>
+                {{ include('user/_form.html.twig') }}
+            </div>
+
+            <a href="{{ path('app_user_index') }}" class="text-blue-color dark:text-white">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+{% endblock %}

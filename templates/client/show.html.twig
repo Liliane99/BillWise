@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma facture{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex mt-4 ml-2">
+        {% include 'components/sidebar.html.twig' %}
+        
+        <div class="flex-1 p-4 content bg-white dark:bg-gray-800 p-2 rounded-lg mr-4 ml-2 overflow-x-auto">
+            <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">Informations client</h1>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Établissement</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.society.raisonSociale }}</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Nom</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.nom }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Prénom</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.prenom }}</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Numéro mobile</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.numTel }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Numéro fixe</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.numFix }}</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Email</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.email }}</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Adresse</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.adresse }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Code postal</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.codePostal }}</div>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Ville</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.ville }}</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Type</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.type }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Raison sociale</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.raisonSociale }}</div>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Siret</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ client.numSiret }}</div>
+                </div>
+            </div>
+
+            <div class="text-left mt-4">
+                <a href="{{ path('app_client_index') }}" class="text-blue-color dark:text-white">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

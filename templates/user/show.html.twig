@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex mt-4 ml-2">
+        {% include 'components/sidebar.html.twig' %}
+
+        <div class="flex-1 p-4 content bg-white dark:bg-gray-800 p-2 rounded-lg mr-4 ml-2 overflow-x-auto">
+            <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">User Details</h1>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
+                <div class="w-full">
+                    <div class="flex justify-center items-center mb-4">
+                        <div class="relative">
+                            <img src="{{ user.profilePictureName ? vich_uploader_asset(user, 'profilePictureFile') : asset('images/user_default.png') }}" class="rounded-full border border-gray-200 w-36 h-36 object-cover dark:border-gray-700">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Email</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ user.email }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Nom</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ user.name }}</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-center mb-2">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Prénom</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ user.surname }}</div>
+                </div>
+                <div class="w-full sm:w-1/2 flex flex-col">
+                    <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Sociétés</div>
+                    {% for societe in user.getSocieteId %}
+                        <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg mb-2 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                            {{ societe.raisonSociale }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col mb-2">
+                <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Roles</div>
+                {% for role in user.roles %}
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg mb-2 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                        {{ role }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-left mt-4">
+                <a href="{{ path('app_user_index') }}" class="text-blue-color hover:text-blue-600 dark:hover:text-blue-400 dark:text-white">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

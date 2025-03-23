@@ -1,0 +1,72 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+nos_services:
+    path: /nos-services
+    controller: App\Controller\NosServicesController::index
+
+app_home:
+    path: /app_home
+    controller: App\Controller\DefaultController::index
+
+a_propos:
+    path: /a_propos
+    controller: App\Controller\AproposController::index
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+app_home_login:
+    path: /home/login
+    controller: App\Controller\HomeLoginController::index
+
+app_facture_new:
+    path: /facture/new
+    controller: App\Controller\FactureController::new
+    methods: ['GET', 'POST']
+
+
+app_facture_index:
+    path: /facture
+    controller: App\Controller\FactureController::index
+    methods: ['GET', 'POST']
+
+app_facture_show:
+    path: '/facture/{id}'
+    controller: 'App\Controller\FactureController::show'
+    methods: ['GET']
+
+app_facture_edit:
+    path: '/facture/edit/{id}'
+    controller: 'App\Controller\FactureController::edit'
+    methods: ['GET']
+
+
+app_facture_delete:
+    path: '/facture/{id}'
+    controller: 'App\Controller\FactureController::delete'
+    methods: ['GET']
+
+generate_pdf:
+    path: '/facture/{id}/generate-pdf'
+    controller: 'App\Controller\FactureController::generatePdf'
+    methods: ['GET']
+    requirements:
+        id: '\d+'
+
+historique:
+    path: '/historique'
+    controller: 'App\Controller\HistoriqueController::historique'
+
+app_user_profile:
+    path: '/profile'
+    controller: App\Controller\UserController::profile
+
+app_facture_send_email:
+    path: 'facture/{id}/send-email/{templateId}'
+    controller: 'App\Controller\FactureController::sendFactureByEmail'
+    methods: ['GET']
+    requirements:
+        id: '\d+'

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Devis {{ devi.refDevis }}</title>
+    <style>
+        body { margin: 0; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 6px; text-align: left; }
+        th, td, table { border: none; }
+        .info-table td:nth-child(2) { text-align: right; }
+        .content { border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+        .totals { text-align: right; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <table class="info-table">
+        <tr>
+            <td style="width: 50%;">
+                <img src="{{ societeInfos.logoPath }}" alt="Logo Société" style="height: 80px; width: auto;">
+            </td>
+            <td style="width: 50%;">
+                {{ societeInfos.raison_sociale }}<br>
+                SIRET:{{ societeInfos.num_siret }}<br>
+                Adresse:{{ societeInfos.adresse }}<br>
+                {{ societeInfos.code_postal }} {{ societeInfos.ville }}<br>
+                Téléphone: {{ societeInfos.num_tel }}<br>
+                Email: {{ societeInfos.email }}
+            </td>
+        </tr>
+        <tr><td style="height: 1px; border: none;"></td></tr>
+        <tr><td style="height: 1px; border: none;"></td></tr>
+    </table>
+
+    <table class="info-table">
+        <tr>
+            <td style="width: 50%;">
+                Titre: {{ devi.titreDevis }}<br>
+                Référence: {{ devi.refDevis }}<br>
+                Date du devis: {{ devi.dateDevis|date('d/m/Y') }}<br>
+                Date d'échéance: {{ devi.dateEcheance|date('d/m/Y') }}
+            </td>
+            <td style="width: 50%;">
+                {% if clientInfos.type == 'particulier' %}
+                    Client:{{ clientInfos.nom }} {{ clientInfos.prenom }}<br>
+                {% else %}
+                    Client:{{ clientInfos.raison_sociale }}<br>
+                {% endif %}
+                Email : {{ clientInfos.email }}<br>
+                Adresse : {{ clientInfos.adresse }}<br>
+                {{ clientInfos.code_postal }} {{ clientInfos.ville }}
+            </td>
+        </tr>
+        <tr><td style="height: 1px; border: none;"></td></tr>
+        <tr><td style="height: 1px; border: none;"></td></tr>
+        
+    </table>
+
+    <table>
+        <thead>
+            <tr style="background-color: rgb(15, 5, 107); color: white;">
+                <th scope="col" style="padding: 8px; text-align: left;">Produit</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Prix unitaire</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Quantité</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Montant HT</th>
+                <th scope="col" style="padding: 8px; text-align: left;">TVA</th>
+                <th scope="col" style="padding: 8px; text-align: left;">Remise</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in devi.devisProduits %}
+            <tr>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.product.designation }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.product.priceUnit }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.nbApprenant }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.montantHt }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.taxeTva }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+                <td style="text-align: left; border-bottom: 1px solid #e0e0e0;">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                        <tr><td style="border: none;">{{ produit.montantRemise }}</td></tr>
+                        <tr><td style="height: 1px; border: none;"></td></tr>
+                    </table>
+                </td>
+            </tr>
+
+        {% endfor %}
+        <tr><td style="height: 1px; border: none;"></td></tr>
+        </tbody>
+    </table>
+
+    <div class="totals">
+        Total HT : {{ devi.totalHt }} €<br>
+        TVA : {{ devi.tva }} €<br>
+        Remise : {{ devi.totalRemise }} €<br>
+        Total TTC : {{ devi.totalTtc }} €<br>
+    </div>
+
+    Détails<br>
+    <div class="content">
+        {{ devi.content }}
+    </div>
+</body>
+</html>

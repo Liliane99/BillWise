@@ -1,0 +1,371 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+{% include 'components/navbar.html.twig' %}
+<div class="flex flex-wrap mt-4 mr-2 ml-2">
+    {% include 'components/sidebar.html.twig' %}
+    <div class="flex-grow p-4 overflow-x-auto bg-white dark:bg-gray-800 content bg-white  p-4 rounded-lg shadow">
+        <h1 class="mb-4 font-bold text-lg font-nunito text-blue-color dark:text-white">Tableau de bord</h1>
+        
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 overflow-x-auto">
+            <select id="societeSelect" class="p-2 border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito rounded-lg shadow cursor-pointer w-full sm:w-auto dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <option value="">Toutes les sociétés</option>
+                {% for societe in app.user.societeId %}
+                    <option value="{{ societe.id }}">{{ societe.RaisonSociale }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" id="startDate" class="p-2 border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito rounded-lg shadow cursor-pointer w-full sm:w-auto dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700" value="{{ "now"|date('Y-m-d') }}">
+            <input type="date" id="endDate" class="p-2 border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito rounded-lg shadow cursor-pointer w-full sm:w-auto dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700" value="{{ "now"|date('Y-m-d') }}">
+            <button id="fetchData" class="p-2 text-white bg-blue-color rounded-lg shadow font-nunito cursor-pointer w-full sm:w-auto">Rafraîchir les données</button>
+        </div>
+
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-blue-color-opacity rounded-lg h-auto justify-center dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header text-blue-color font-semibold font-nunito text-center dark:text-white">Chiffre d'affaires</div>
+                <div class="card-body flex flex-col justify-between">
+                    <canvas id="caChart" class="max-w-xs max-h-xs"></canvas>
+                    <div id="caValue" class="text-xl font-bold text-center"></div>
+                    <div id="caTotal" class="text-lg font-semibold text-center text-blue-color font-nunito dark:text-white"></div> 
+                </div>
+            </div>
+            <div class="p-4 bg-blue-color-opacity rounded-lg justify-center dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header text-blue-color font-nunito font-semibold  text-center mb-4 dark:text-white">Top 5 des clients</div>
+                <div class="card-body">
+                    <canvas id="topClientsChart"></canvas>
+                </div>
+            </div>
+            <div class="p-4 bg-blue-color-opacity rounded-lg  justify-center dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header text-blue-color font-nunito font-semibold  text-center mb-4 dark:text-white">Top 5 des produits</div>
+                <div class="card-body">
+                    <canvas id="topProduitsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            <div class="p-4 bg-blue-color rounded-lg h-48 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header  text-white text-blue-color font-nunito text-xl font-semibold text-center mb-8 mt-2">Nombre de factures payées</div> 
+                <div class="card-body flex items-center justify-center">
+                    <div id="paidFacturesCount" class="text-white text-blue-color font-nunito text-5xl font-semibold text-center"></div>
+                </div>
+            </div>
+            <div class="p-4 bg-blue-color rounded-lg h-48 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header  text-white text-blue-color font-nunito text-xl font-semibold text-center mb-8 mt-2">Nombre total de clients</div> 
+                <div class="card-body flex items-center justify-center">
+                    <div id="totalClientsCount" class="text-white text-blue-color font-nunito text-5xl font-semibold text-center"></div>
+                </div>
+            </div>
+            <div class="p-4 bg-blue-color rounded-lg h-48 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700">
+                <div class="card-header  text-white text-blue-color font-nunito text-xl font-semibold text-center mb-8 mt-2">Nombre total de produits</div>
+                <div class="card-body flex items-center justify-center">
+                    <div id="totalProductsCount" class="text-white text-blue-color font-nunito text-5xl font-semibold text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="mb-4 font-bold text-lg font-nunito text-blue-color dark:text-white">Factures</h2>
+            <button id="exportButton" class="p-2 text-right text-white bg-blue-color rounded-lg shadow cursor-pointer mb-2">Exporter vers Excel</button>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table id="facturesTable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-white uppercase font-nunito bg-blue-color">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Référence de la facture</th>
+                            <th scope="col" class="px-6 py-3">Total HT</th>
+                            <th scope="col" class="px-6 py-3">TVA</th>
+                            <th scope="col" class="px-6 py-3">Total TTC</th>
+                            <th scope="col" class="px-6 py-3">Montant Payé</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facturesBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const societeSelect = document.getElementById('societeSelect');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    const fetchDataButton = document.getElementById('fetchData'); 
+    const exportButton = document.getElementById('exportButton'); 
+    let caChart = null; 
+    let topClientsChart = null;
+    let topProduitsChart = null;
+
+    const updateChart = (data, caTotal) => {
+        const ctx = document.getElementById('caChart').getContext('2d');
+        const caReste = caTotal - data.chiffreAffaire;
+        if (caChart) caChart.destroy(); 
+
+        caChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [data.chiffreAffaire, caReste],
+                    backgroundColor: ['rgba(15, 5, 107, 1)', 'rgba(200, 200, 200, 0.5)'],
+                }],
+                labels: ['Chiffre d\'affaires de la période', 'Reste']
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 1,
+                plugins: {
+                    legend: { display: false },
+                },
+                cutout: '80%'
+            }
+        });
+
+        document.getElementById('caTotal').textContent = `${caTotal} €`;
+    };
+
+    const fetchChiffreAffaire = () => {
+        fetch('/dashboard/api/chiffre-affaire', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateChart(data, data.chiffreAffaireTotal);
+        })
+        .catch(error => console.error('Erreur lors de la récupération du chiffre d\'affaires:', error));
+    };
+
+    const fetchTopClients = () => { 
+        fetch('/dashboard/api/top-clients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const topClientsChartCtx = document.getElementById('topClientsChart').getContext('2d');
+
+            if (topClientsChart !== null) {
+                topClientsChart.destroy();
+            }
+
+            topClientsChart = new Chart(topClientsChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.topClients.map(client => client.clientName), 
+                    datasets: [{
+                        label: 'Montant payé',
+                        data: data.topClients.map(client => client.totalPaid),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Erreur lors de la récupération des top clients:', error));
+    };
+
+    const fetchFactures = () => {
+        fetch('/dashboard/api/factures', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Données reçues pour les factures :', data);
+            const facturesBody = document.querySelector('#facturesBody');
+            facturesBody.innerHTML = ''; 
+            let tvaSum = 0;
+            let totalPaidSum = 0;
+            data.factures.forEach(facture => {
+                const row = `<tr class="bg-white font-nunito border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-6 py-4">${facture.refFacture}</td>
+                    <td class="px-6 py-4">${facture.totalHt}</td>
+                    <td class="px-6 py-4">${facture.tva}</td>
+                    <td class="px-6 py-4">${facture.totalTtc}</td>
+                    <td class="px-6 py-4">${facture.totalPaid}</td>
+                    <td class="px-6 py-4">${facture.dateEcheance}</td>
+                </tr>`;
+                facturesBody.innerHTML += row;
+                tvaSum += parseFloat(facture.tva);
+                totalPaidSum += parseFloat(facture.totalPaid);
+            });
+            const tvaRow = `<tr>
+                <td class="px-6 py-4 font-nunito font-bold">Somme TVA :</td>
+                <td class="px-6 py-4 font-nunito font-bold" colspan="5">${tvaSum || 0}</td>
+            </tr>`;
+            facturesBody.innerHTML += tvaRow;
+
+            const totalPaidRow = `<tr>
+                <td class="px-6 py-4 font-bold">Somme Montant Payé :</td>
+                <td class="px-6 py-4 font-bold" colspan="5">${totalPaidSum || 0}</td>
+            </tr>`;
+            facturesBody.innerHTML += totalPaidRow;
+        })
+        .catch(error => console.error('Erreur lors de la récupération des factures:', error));
+    };
+    const fetchTopProduits = () => { 
+        fetch('/dashboard/api/top-produits', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const topProduitsChartCtx = document.getElementById('topProduitsChart').getContext('2d');
+
+            if (topProduitsChart !== null) {
+                topProduitsChart.destroy();
+            }
+
+            topProduitsChart = new Chart(topProduitsChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.topProduits.map(produit => produit.productName),
+                    datasets: [{
+                        label: 'Montant TTC généré',
+                        data: data.topProduits.map(produit => produit.totalTTC),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Erreur lors de la récupération des top produits:', error));
+    };
+    const fetchPaidFacturesCount = () => { 
+        fetch('/dashboard/api/count-paid-factures', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('paidFacturesCount').textContent = data.totalPaidFactures;
+        })
+        .catch(error => console.error('Erreur lors de la récupération du nombre de factures payées:', error));
+    };
+
+    const fetchTotalClients = () => { 
+        fetch('/dashboard/api/count-clients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('totalClientsCount').textContent = data.totalClients;
+        })
+        .catch(error => console.error('Erreur lors de la récupération du nombre total de clients:', error));
+    };
+
+    const fetchTotalProducts = () => { 
+        fetch('/dashboard/api/count-products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                societeId: societeSelect.value,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('totalProductsCount').textContent = data.totalProducts;
+        })
+        .catch(error => console.error('Erreur lors de la récupération du nombre total de produits:', error));
+    };
+
+    fetchDataButton.addEventListener('click', function() {
+        fetchChiffreAffaire();
+        fetchTopClients(); 
+        fetchFactures();
+        fetchTopProduits();
+        fetchPaidFacturesCount();
+        fetchTotalClients();
+         fetchTotalProducts();
+    });
+
+    exportButton.addEventListener('click', function() {
+        const facturesTable = document.querySelector('#facturesTable');
+        const wb = XLSX.utils.table_to_book(facturesTable, { sheet: "Sheet JS" });
+        XLSX.writeFile(wb, 'exported_data.xlsx');
+    });
+
+    fetchChiffreAffaire();
+    fetchFactures();
+    fetchTopClients();
+    fetchTopProduits();
+    fetchPaidFacturesCount();
+    fetchTotalClients();
+     fetchTotalProducts();
+    
+});
+
+document.getElementById('startDate').addEventListener('change', function() {
+    var startDate = this.value;
+    var endDateInput = document.getElementById('endDate');
+    endDateInput.min = startDate;
+    if (endDateInput.value < startDate) {
+        endDateInput.value = startDate;
+    }
+});
+
+document.getElementById('endDate').addEventListener('change', function() {
+    var endDate = this.value;
+    var startDateInput = document.getElementById('startDate');
+    startDateInput.max = endDate;
+    if (startDateInput.value > endDate) {
+        startDateInput.value = endDate;
+    }
+});
+</script>
+
+{% endblock %}

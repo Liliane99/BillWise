@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit user{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex flex-wrap mt-4">
+        {% include 'components/sidebar.html.twig' %} 
+
+        <div class="flex-grow p-4 bg-white dark:bg-gray-800 rounded-lg shadow ml-4 mr-4">
+                <h1 class="mb-4 text-lg font-bold font-nunito text-blue-color dark:text-white">Modifier les informations d'un utilisateur</h1>
+                {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                    <div class="flex flex-col items-center mb-4">
+                        <label for="{{ form.profilePictureFile.vars.id }}" class="px-4 py-2 bg-blue-color text-white rounded-lg">
+                            Télécharger une nouvelle photo de profil
+                        </label>
+                        {{ form_widget(form.profilePictureFile, {'attr': {'class': 'text-white'}}) }}
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="w-full sm:w-1/2">
+                            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                        <div class="w-full sm:w-1/2">
+                            <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">{{ form_label(form.password, 'Mot de passe') }}</div>
+                            <div class="flex items-center gap-2">
+                                {{ form_widget(form.password, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                                <button type="button" id="generatePassword" class="bg-blue-color text-white p-2 rounded-lg">
+                                    Générer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="w-full sm:w-1/2">
+                            {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                        <div class="w-full sm:w-1/2">
+                            {{ form_label(form.surname, 'Prénom', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.surname, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                    </div>
+
+
+                    <div class="mb-4 flex justify-between items-center">
+                        <div class="w-1/2 pr-4 flex flex-col">
+                            {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.roles, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400', 'id': 'roles_multiple'}}) }}
+                        </div>
+                        <div class="w-1/2 pl-2 flex flex-col">
+                            {{ form_label(form.societe_id, 'Sociétés', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.societe_id, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="text-right mt-4">
+                        <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">{{ button_label|default('Update') }}</button>
+                    </div>
+
+                {{ form_end(form) }}
+
+                <div class="flex justify-end space-x-4 mt-4">
+                    <form method="post" action="{{ path('app_user_delete', {'slug': user.slug}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.slug) }}">
+                        <button class="px-4 py-2 bg-blue-color text-white rounded-lg">Delete</button>
+                    </form>
+                </div>
+                <a href="{{ path('app_user_index') }}" class=" text-left text-blue-color hover:text-blue-600 dark:hover:text-blue-400 dark:text-white">
+                        <i class="fas fa-arrow-left"></i>
+                </a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('generatePassword').addEventListener('click', function() {
+            var passwordField = document.querySelector('input[name="user[password]"]');
+            var newPassword = generatePassword(12);
+            passwordField.value = newPassword;
+            
+            passwordField.type = 'text';
+
+
+            setTimeout(function() {
+                passwordField.type = 'password';
+            }, 15000); 
+        });
+
+        function generatePassword(length) {
+            var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            return retVal;
+        }
+    </script>
+{% endblock %}

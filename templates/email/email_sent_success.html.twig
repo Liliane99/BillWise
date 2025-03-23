@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devis Envoyé{% endblock %}
+
+{% block body %}
+<div class="text-center mt-12 bg-body-color">
+    <h1 class="text-2xl font-bold text-blue-color">Votre devis a été envoyé avec succès !</h1>
+    <img src="{{ asset('build/images/mail_sent.png') }}" alt="Success" class="mx-auto mt-6 w-96 h-auto"/>
+    <div class="mt-8">
+        <a href="{{ path('app_devis_index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Retour à la liste des devis
+        </a>
+    </div>
+</div>
+{% endblock %}

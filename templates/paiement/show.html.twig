@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block body %}
+{% include 'components/navbar.html.twig' %}
+
+<div class="flex mt-4 ml-2">
+    {% include 'components/sidebar.html.twig' %}
+    
+    <div class="flex-1 p-4 content bg-white dark:bg-gray-800 p-2 rounded-lg mr-4 ml-2 overflow-x-auto">
+        <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">Paiement</h1>
+
+        <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
+            <div class="w-full">
+                <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Date de paiement</div>
+                <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ paiement.datePaiement ? paiement.datePaiement|date('Y-m-d H:i:s') : '' }}</div>
+            </div>
+            <div class="w-full">
+                <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Montant</div>
+                <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ paiement.montant }}</div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
+            <div class="w-full">
+                <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Type</div>
+                <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ paiement.type }}</div>
+            </div>
+            <div class="w-full">
+                <div class="mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white">Statut</div>
+                <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ paiement.statut }}</div>
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-4 mt-4 text-right">
+            <form method="post" action="{{ path('app_paiement_delete', {'id': paiement.id}) }}" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce produit?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ paiement.id) }}">
+                <button class="px-4 py-2 bg-blue-color text-white rounded-lg">Delete</button>
+            </form>
+        </div>
+        <a href="{{ path('app_paiement_index') }}" class=" text-right text-blue-color hover:text-blue-600 dark:hover:text-blue-400 dark:text-white">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,370 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Devis{% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+
+    <div class="flex mt-4 ml-2">
+        {% include 'components/sidebar.html.twig' %}
+        <div class="flex-1 p-4 content bg-white p-2 rounded-lg mr-4 ml-4 overflow-x-auto dark:bg-gray-800">
+            <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">Edit Devis</h1>
+
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="flex-1">
+                        {{ form_label(form.titre_devis, 'Titre', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.titre_devis, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                    </div>
+                    <div class="flex-1">
+                        {{ form_label(form.ref_devis, 'Réference', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.ref_devis, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="flex-1 sm:flex-row">
+                        {{ form_label(form.society, 'Société', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.society, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full mb-2  dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        <div id="society-info" class="mt-2 bg-white shadow-lg p-4 rounded-lg text-blue-color border border-gray-200  dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                            <p class='font-semibold'>Raison sociale: <span id="society-name-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Adresse: <span id="society-address-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Code postal: <span id="society-zip-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Ville: <span id="society-city-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Numéro de téléphone: <span id="society-phone-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        {{ form_label(form.client, 'Client', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.client, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full mb-2 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        <div id="client-info" class="mt-2 bg-white shadow-lg p-4 rounded-lg text-blue-color border border-gray-200 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                            <p class='font-semibold'>Client: <span id="client-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Adresse: <span id="client-address-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Code postal: <span id="client-zip-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Ville: <span id="client-city-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                            <p class='font-semibold'>Email: <span id="client-email-placeholder" class="text-gray-400 font-normal">__________</span></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col sm:flex-row gap-4 items-center mt-4">
+                    <div class="w-1/2">
+                        {{ form_label(form.date_devis, 'Date du devis', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.date_devis, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+                    </div>
+                    <div class="w-1/2">
+                        {{ form_label(form.date_echeance, 'Date d\'echeance', {'label_attr': {'class': 'mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.date_echeance, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400 sm:text-sm'}}) }}
+                    </div>
+                </div>
+
+                <div id="devisProduits" data-prototype="{{ form_widget(form.devisProduits.vars.prototype)|e('html_attr') }}" class="space-y-4 space-y-4 overflow-x-auto shadow-md sm:rounded-lg">
+                    <h3 class="mb-2 text-base font-semibold font-nunito text-blue-color dark:text-white">Produits</h3>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-white font-nunito uppercase bg-blue-color">
+                            <tr>
+                                <th scope="col" class="py-3 px-6">Produit</th>
+                                <th scope="col" class="py-3 px-6">Prix unitaire</th>
+                                <th scope="col" class="py-3 px-6">Nombre d'apprenants</th>
+                                <th scope="col" class="py-3 px-6">Montant HT</th>
+                                <th scope="col" class="py-3 px-6">TVA</th>
+                                <th scope="col" class="py-3 px-6">Remise</th>
+                                <th scope="col" class="py-3 px-6">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for devisProduit in form.devisProduits %}
+                                <tr class="dark:text-white">
+                                    <td>{{ form_row(devisProduit.product, {'label': false,'attr': {'class': 'product-select border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700'}}) }}</td>
+                                    <td>
+                                        {% set priceUnit = (devisProduit.vars.value.montantHt is defined and devisProduit.vars.value.nbApprenant > 0) ? (devisProduit.vars.value.montantHt / devisProduit.vars.value.nbApprenant) : 0 %}
+                                        <input type="text" class="price-unit-display border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly value="{{ priceUnit|number_format(2, '.', ',') }}">
+                                    </td>
+                                    <td>{{ form_row(devisProduit.nb_apprenant, {'label': false,'attr': {'class': 'nb-apprenant-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700'}}) }}</td>
+                                    <td>{{ form_row(devisProduit.montant_ht, {'label': false,'attr': {'class': 'montant-ht-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700'}}) }}</td>
+                                    <td>{{ form_row(devisProduit.taxe_tva, {'label': false,'attr': {'class': 'taxe-tva-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700'}}) }}</td>
+                                    <td>{{ form_row(devisProduit.montant_remise, {'label': false,'attr': {'class': 'montant-remise-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700'}}) }}</td>
+                                    <td><button type="button" class="remove-item bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button></td>
+                                </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+                    <button type="button" class="add_item_link px-4 py-2 bg-blue-color text-white rounded-lg">Ajouter un produit</button>
+                </div>
+
+                <div class="flex gap-4 items-start mt-4">
+                    <div class="w-1/2 h-auto">
+                        {{ form_label(form.content, 'Détails', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                        {{ form_widget(form.content, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                    </div>
+
+                    <div class="w-1/2 space-y-4">
+                        <div>
+                            {{ form_label(form.total_ht, 'Total HT', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.total_ht, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                        <div>
+                            {{ form_label(form.tva, 'TVA', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.tva, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                        <div>
+                            {{ form_label(form.total_remise, 'Remise', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.total_remise, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                        <div>
+                            {{ form_label(form.total_ttc, 'Total TTC', {'label_attr': {'class': 'mb-1 text-sm font-semibold font-nunito text-blue-color dark:text-white'}}) }}
+                            {{ form_widget(form.total_ttc, {'attr': {'class': 'border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right mt-4">
+                    <button type="submit" class="px-4 py-2 bg-blue-color text-white rounded-lg">{{ button_label|default('Update') }}</button>
+                    <form method="post" action="{{ path('app_devis_delete', {'id': devi.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ devi.id) }}">
+                        <button class="px-4 py-2 bg-blue-color text-white rounded-lg mr-2">Delete</button>
+                    </form>
+                </div>
+
+                {{ form_end(form) }}
+
+            <div class="flex space-x-4 mt-4 text-left">
+                <a href="{{ path('app_devis_index') }}" class="text-blue-color ">
+                    <i class="fas fa-arrow-left dark:text-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const societySelect = document.getElementById('devis_society');
+            const clientSelect = document.getElementById('devis_client');
+            const produitsContainer = document.querySelector('#devisProduits');
+            const addButton = document.querySelector('.add_item_link');
+            let totalHtInitial = parseFloat(document.querySelector('input[name="devis[total_ht]"]').value) || 0;
+            let totalTvaInitial = parseFloat(document.querySelector('input[name="devis[tva]"]').value) || 0;
+            let totalRemiseInitial = parseFloat(document.querySelector('input[name="devis[total_remise]"]').value) || 0;
+            let totalTtcInitial = parseFloat(document.querySelector('input[name="devis[total_ttc]"]').value) || 0;
+
+            let index = produitsContainer.querySelectorAll('tbody tr').length;
+
+            function loadSocietyInfo(societyId) {
+                fetch(`/societe/societe-info/${societyId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('society-name-placeholder').textContent = data.raison_sociale ?? 'Non disponible';
+                        document.getElementById('society-address-placeholder').textContent = data.adresse ?? 'Non disponible';
+                        document.getElementById('society-zip-placeholder').textContent = data.code_postal ?? 'Non disponible';
+                        document.getElementById('society-city-placeholder').textContent = data.ville ?? 'Non disponible';
+                        document.getElementById('society-phone-placeholder').textContent = data.num_tel ?? 'Non disponible';
+                    })
+                    .catch(error => console.error('Erreur:', error));
+            }
+
+            function loadClientInfo(clientId) {
+                fetch(`/client/client-info/${clientId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let clientText = data.type === 'particulier' 
+                            ? `${data.nom} ${data.prenom}` 
+                            : data.raison_sociale;
+                        document.getElementById('client-placeholder').textContent = clientText || 'Non disponible';
+                        document.getElementById('client-address-placeholder').textContent = data.adresse ?? 'Non disponible';
+                        document.getElementById('client-zip-placeholder').textContent = data.code_postal ?? 'Non disponible';
+                        document.getElementById('client-city-placeholder').textContent = data.ville ?? 'Non disponible';
+                        document.getElementById('client-email-placeholder').textContent = data.email ?? 'Non disponible';
+                    })
+                    .catch(error => console.error('Erreur:', error));
+            }
+
+            function updateProduitsForSociety(societyId) {
+                fetch(`/produit/api/societe/${societyId}/products`)
+                    .then(response => response.json())
+                    .then(produits => {
+                        produitsContainer.dataset.produits = JSON.stringify(produits);
+                    })
+                    .catch(error => console.error('Erreur lors de la récupération des produits:', error));
+            }
+
+            function addProduitRow() {
+                const produits = JSON.parse(produitsContainer.dataset.produits || '[]');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = createProduitRowHtml(index, produits);
+                produitsContainer.querySelector('tbody').appendChild(newRow);
+                attachEventListenersToRow(newRow, index);
+                index++;
+                updateTotals();
+            }
+
+            function createProduitRowHtml(rowIndex, produits) {
+                let selectHtml = `<select name="devis[devisProduits][${rowIndex}][product]" class="product-select border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700">`;
+                produits.forEach(produit => {
+                    selectHtml += `<option value="${produit.id}" data-price-unit="${produit.priceUnit}" data-taux-tva="${produit.tauxTva}">${produit.designation}</option>`;
+                });
+                selectHtml += '</select>';
+
+                return `
+                    <td>${selectHtml}</td>
+                    <td><input type="text" name="devis[devisProduits][${rowIndex}][price_unit]" class="price-unit-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                    <td><input type="number" name="devis[devisProduits][${rowIndex}][nb_apprenant]" class="nb-apprenant-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" /></td>
+                    <td><input type="text" name="devis[devisProduits][${rowIndex}][montant_ht]" class="montant-ht-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                    <td><input type="text" name="devis[devisProduits][${rowIndex}][taxe_tva]" class="taxe-tva-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" readonly /></td>
+                    <td><input type="text" name="devis[devisProduits][${rowIndex}][montant_remise]" value="0.00" class="montant-remise-input border border-gray-300 bg-white text-gray-700 font-nunito p-2 rounded-lg w-full dark:bg-gray-800 dark:border-gray-700" /></td>
+                    <td><button type="button" class="remove-item bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button></td>
+                `;
+            }
+            function attachEventListenersToRow(rowElement, rowIndex) {
+                const removeButton = rowElement.querySelector('.remove-item');
+                removeButton.addEventListener('click', function() {
+                    rowElement.remove();
+                    updateTotals();
+                });
+
+                const productSelect = rowElement.querySelector('.product-select');
+                const nbApprenantInput = rowElement.querySelector('.nb-apprenant-input');
+                const montantRemiseInput = rowElement.querySelector('.montant-remise-input');
+
+                productSelect.addEventListener('change', function() {
+                    updateRowValues(rowElement, rowIndex);
+                    updateTotals(); 
+                });
+
+                nbApprenantInput.addEventListener('input', function() {
+                    updateRowValues(rowElement, rowIndex);
+                    updateTotals(); 
+                });
+                montantRemiseInput.addEventListener('input', function() {
+                    updateTotals(); 
+                });
+            }
+
+            function updateRowValues(rowElement, rowIndex) {
+                const productSelect = rowElement.querySelector('.product-select');
+                const priceUnitInput = rowElement.querySelector('.price-unit-input');
+                const nbApprenantInput = rowElement.querySelector('.nb-apprenant-input');
+                const montantHtInput = rowElement.querySelector('.montant-ht-input');
+                const taxeTvaInput = rowElement.querySelector('.taxe-tva-input');
+
+                if (productSelect.selectedIndex >= 0) {
+                    const selectedOption = productSelect.options[productSelect.selectedIndex];
+                    const priceUnit = parseFloat(selectedOption.getAttribute('data-price-unit'));
+                    const tauxTva = parseFloat(selectedOption.getAttribute('data-taux-tva'));
+                    const nbApprenants = parseFloat(nbApprenantInput.value || 0);
+
+                    priceUnitInput.value = priceUnit.toFixed(2);
+                    montantHtInput.value = (priceUnit * nbApprenants).toFixed(2);
+                    taxeTvaInput.value = ((priceUnit * nbApprenants) * tauxTva / 100).toFixed(2);
+                }
+            }
+
+            function updateTotals() {
+                let totalHt = 0;
+                let totalTva = 0;
+                let totalRemise = 0;
+
+                document.querySelectorAll('#devisProduits tbody tr').forEach(row => {
+                    const montantHtInput = row.querySelector('.montant-ht-input');
+                    const taxeTvaInput = row.querySelector('.taxe-tva-input');
+                    const montantRemiseInput = row.querySelector('.montant-remise-input');
+
+                    if (montantHtInput && taxeTvaInput && montantRemiseInput) {
+                        const montantHt = parseFloat(montantHtInput.value) || 0;
+                        const taxeTva = parseFloat(taxeTvaInput.value) || 0;
+                        const montantRemise = parseFloat(montantRemiseInput.value) || 0;
+
+                        totalHt += montantHt;
+                        totalTva += taxeTva;
+                        totalRemise += montantRemise;
+                    }
+                });
+
+
+                const totalTtc = totalHt + totalTva - totalRemise;
+                document.querySelector('input[name="devis[total_ht]"]').value = totalHt.toFixed(2);
+                document.querySelector('input[name="devis[tva]"]').value = totalTva.toFixed(2);
+                document.querySelector('input[name="devis[total_remise]"]').value = totalRemise.toFixed(2);
+                document.querySelector('input[name="devis[total_ttc]"]').value = totalTtc.toFixed(2);
+            }
+
+
+            if (societySelect.value) loadSocietyInfo(societySelect.value);
+            if (clientSelect.value) loadClientInfo(clientSelect.value);
+
+            societySelect.addEventListener('change', () => loadSocietyInfo(societySelect.value));
+            clientSelect.addEventListener('change', () => loadClientInfo(clientSelect.value));
+
+
+            if (societySelect.value) {
+                updateProduitsForSociety(societySelect.value);
+            }
+
+            addButton.addEventListener('click', addProduitRow);
+            societySelect.addEventListener('change', function() {
+                updateProduitsForSociety(this.value);
+                loadSocietyInfo(this.value);
+            });
+            clientSelect.addEventListener('change', function() {
+                loadClientInfo(this.value);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function updateTotals() {
+                let totalHt = 0, totalTva = 0, totalRemise = 0, totalTtc = 0;
+
+                document.querySelectorAll('#devisProduits tbody tr').forEach(row => {
+                    const montantHt = parseFloat(row.querySelector('.montant-ht-input').value) || 0;
+                    const taxeTva = parseFloat(row.querySelector('.taxe-tva-input').value) || 0;
+                    const montantRemise = parseFloat(row.querySelector('.montant-remise-input').value) || 0;
+
+                    totalHt += montantHt;
+                    totalTva += taxeTva;
+                    totalRemise += montantRemise;
+                });
+
+                totalTtc = totalHt + totalTva - totalRemise;
+
+                document.querySelector('input[name="devis[total_ht]"]').value = totalHt.toFixed(2);
+                document.querySelector('input[name="devis[tva]"]').value = totalTva.toFixed(2);
+                document.querySelector('input[name="devis[total_remise]"]').value = totalRemise.toFixed(2);
+                document.querySelector('input[name="devis[total_ttc]"]').value = totalTtc.toFixed(2);
+            }
+
+            function initializeAndRecalculate(row) {
+                const nbApprenantInput = row.querySelector('.nb-apprenant-input');
+                const montantHtInput = row.querySelector('.montant-ht-input');
+                const taxeTvaInput = row.querySelector('.taxe-tva-input');
+                const montantHtOriginal = parseFloat(montantHtInput.value) || 0;
+                const taxeTvaOriginal = parseFloat(taxeTvaInput.value) || 0;
+                let nbApprenantsOriginal = parseFloat(nbApprenantInput.value) || 0;
+
+                if (nbApprenantsOriginal === 0) nbApprenantsOriginal = 1; 
+
+                const priceUnit = montantHtOriginal / nbApprenantsOriginal;
+                const tauxTva = (taxeTvaOriginal / montantHtOriginal) * 100;
+
+                function recalculateValues() {
+                    const nbApprenants = parseFloat(nbApprenantInput.value) || 0;
+                    const newMontantHt = nbApprenants * priceUnit;
+                    const newTaxeTva = newMontantHt * tauxTva / 100;
+
+                    montantHtInput.value = newMontantHt.toFixed(2);
+                    taxeTvaInput.value = newTaxeTva.toFixed(2);
+
+                    updateTotals(); 
+                }
+
+                recalculateValues(); 
+
+                nbApprenantInput.addEventListener('input', recalculateValues);
+            }
+
+            document.querySelectorAll('#devisProduits tbody tr').forEach(initializeAndRecalculate);
+        });
+    </script>
+{% endblock %}

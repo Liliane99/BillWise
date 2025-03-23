@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DevisProduit{% endblock %}
+
+{% block body %}
+    <h1>Create new DevisProduit</h1>
+
+    {{ include('devis_produit/_form.html.twig') }}
+
+    <a href="{{ path('app_devis_produit_index') }}">back to list</a>
+{% endblock %}

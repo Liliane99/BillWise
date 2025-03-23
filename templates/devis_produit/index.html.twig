@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DevisProduit index{% endblock %}
+
+{% block body %}
+    <h1>DevisProduit index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nb_apprenant</th>
+                <th>Montant_ht</th>
+                <th>Taxe_tva</th>
+                <th>Montant_remise</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for devis_produit in devis_produits %}
+            <tr>
+                <td>{{ devis_produit.id }}</td>
+                <td>{{ devis_produit.nbApprenant }}</td>
+                <td>{{ devis_produit.montantHt }}</td>
+                <td>{{ devis_produit.taxeTva }}</td>
+                <td>{{ devis_produit.montantRemise }}</td>
+                <td>
+                    <a href="{{ path('app_devis_produit_show', {'id': devis_produit.id}) }}">show</a>
+                    <a href="{{ path('app_devis_produit_edit', {'id': devis_produit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_devis_produit_new') }}">Create new</a>
+{% endblock %}

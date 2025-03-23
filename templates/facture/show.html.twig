@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma facture{% endblock %}
+
+{% block body %}
+{% include 'components/navbar.html.twig' %}
+
+<div class="flex mt-4 ml-2">
+    {% include 'components/sidebar.html.twig' %}
+    <div class="flex-1 p-4 content bg-white p-2 rounded-lg mr-4 ml-2 overflow-x-auto dark:bg-gray-800">
+        <h1 class="text-blue-color font-nunito text-lg font-bold mb-2 dark:text-white">Ma facture</h1>
+
+        <div class="flex flex-col sm:flex-row gap-4 mb-4">
+            <div class="w-full sm:w-1/2 bg-blue-color-opacity font-nunito shadow-lg p-4 rounded-lg text-blue-color border border-gray-200 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                <p class='font-semibold'>Raison sociale: <span>{{ facture.society.raisonSociale }}</span></p>
+                <p class='font-semibold'>Adresse: <span>{{ facture.society.adresse }}</span></p>
+                <p class='font-semibold'>Code postal: <span>{{ facture.society.codePostal }}</span></p>
+                <p class='font-semibold'>Ville: <span>{{ facture.society.ville }}</span></p>
+                <p class='font-semibold'>Numéro de téléphone: <span>{{ facture.society.numTel }}</span></p>
+            </div>
+
+            <div class="w-full sm:w-1/2 bg-blue-color-opacity shadow-lg p-4 rounded-lg text-blue-color border border-gray-200 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">
+                <p class='font-semibold'>Client: <span>{{ facture.client.nom }} {{ facture.client.prenom }}</span></p>
+                <p class='font-semibold'>Adresse: <span>{{ facture.client.adresse }}</span></p>
+                <p class='font-semibold'>Code postal: <span>{{ facture.client.codePostal }}</span></p>
+                <p class='font-semibold'>Ville: <span>{{ facture.client.ville }}</span></p>
+                <p class='font-semibold'>Email: <span>{{ facture.client.email }}</span></p>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Titre</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.titreFacture }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Référence</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.refFacture }}</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Date de la facture</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.dateFacture|date('Y-m-d') }}</div>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Date d'échéance</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.dateEcheance|date('Y-m-d') }}</div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="mb-2 text-sm font-semibold font-nunito text-blue-color dark:text-white">Produits</h3>
+                <div class="overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-white uppercase bg-blue-color dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Produit</th>
+                                <th scope="col" class="px-6 py-3">Prix unitaire</th>
+                                <th scope="col" class="px-6 py-3">Quantité</th>
+                                <th scope="col" class="px-6 py-3">Montant HT</th>
+                                <th scope="col" class="px-6 py-3">TVA</th>
+                                <th scope="col" class="px-6 py-3">Remise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for produit in facture.FactureProduits %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4">{{ produit.product.designation }}</td>
+                                    <td class="px-6 py-4">{{ produit.product.priceUnit }}</td>
+                                    <td class="px-6 py-4">{{ produit.nbApprenant }}</td>
+                                    <td class="px-6 py-4">{{ produit.montantHt }}</td>
+                                    <td class="px-6 py-4">{{ produit.taxeTva }}</td>
+                                    <td class="px-6 py-4">{{ produit.montantRemise }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center">Aucun produit trouvé</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="w-full sm:w-1/2">
+                    <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Détails</div>
+                    <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.conditionTermes }}</div>
+                </div>
+                <div class="w-full sm:w-1/2 space-y-4">
+                    <div>
+                        <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Total HT</div>
+                        <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.totalHt }} €</div>
+                    </div>
+                    <div>
+                        <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">TVA</div>
+                        <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.tva }} €</div>
+                    </div>
+                    <div>
+                        <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Total remise</div>
+                        <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.totalRemise }} €</div>
+                    </div>
+                    <div>
+                        <div class="mb-1 text-base font-semibold font-nunito text-blue-color dark:text-white">Total TTC</div>
+                        <div class="border border-gray-200 bg-blue-color-opacity text-blue-color font-nunito p-2 rounded-lg w-full dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400">{{ facture.totalTtc }} €</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right mt-4 space-x-2">
+                <a href="{{ path('generate_pdf', {'id': facture.id}) }}" class="px-4 py-2 bg-blue-color text-white rounded-lg">Générer PDF</a>
+                <a href="{{ path('app_facture_send_email', {'id': facture.id, 'templateId': 5}) }}" class="px-4 py-2 bg-blue-color text-white rounded-lg">Envoyer par Email</a>
+            </div>
+            <a href="{{ path('app_facture_index') }}" class="text-blue-color text-left dark:text-white">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const societyId = '{{ facture.society.id }}';
+            const clientId = '{{ facture.client.id }}';
+
+            fetch(`/societe/societe-info/${societyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('society-name').textContent = data.raison_sociale;
+                    document.getElementById('society-address').textContent = data.adresse;
+                    document.getElementById('society-zip').textContent = data.code_postal;
+                    document.getElementById('society-city').textContent = data.ville;
+                    document.getElementById('society-phone').textContent = data.num_tel;
+                })
+                .catch(error => console.error('Erreur:', error));
+
+            fetch(`/client/client-info/${clientId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('client-name').textContent = data.nom + ' ' + data.prenom;
+                    document.getElementById('client-address').textContent = data.adresse;
+                    document.getElementById('client-zip').textContent = data.code_postal;
+                    document.getElementById('client-city').textContent = data.ville;
+                    document.getElementById('client-email').textContent = data.email;
+                })
+                .catch(error => console.error('Erreur:', error));
+        });
+    </script>
+
+{% endblock %}
